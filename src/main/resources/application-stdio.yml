@@ -1,0 +1,21 @@
+# STDIO transport profile. Suitable for Claude Desktop and any local MCP client
+# that talks to the server over stdin/stdout.
+#
+# In this mode the JVM's stdout IS the protocol channel: any banner, log line or
+# stray println would corrupt the JSON-RPC stream. We therefore disable the web
+# application context, suppress the Spring banner, redirect logging to a file
+# and silence the console pattern.
+spring:
+  main:
+    web-application-type: none
+    banner-mode: off
+  ai:
+    mcp:
+      server:
+        stdio: true
+
+logging:
+  pattern:
+    console: ""
+  file:
+    name: ./logs/mcp-stdio.log

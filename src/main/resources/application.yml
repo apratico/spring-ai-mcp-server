@@ -1,0 +1,41 @@
+# Default profile = HTTP/SSE transport on :8080.
+# Switch to STDIO transport (for Claude Desktop and other STDIO MCP clients) with:
+#   mvn spring-boot:run -Dspring-boot.run.profiles=stdio
+spring:
+  profiles:
+    default: http
+  application:
+    name: manufacturing-operations-mcp
+  ai:
+    mcp:
+      server:
+        name: manufacturing-operations
+        version: 0.1.0
+        type: SYNC
+    # We don't use the OpenAI chat / image / audio / moderation models anywhere;
+    # only the embedding model is wired, and only on demand. Set
+    # SPRING_AI_MODEL_EMBEDDING=openai (with OPENAI_API_KEY) to enable the
+    # search_manuals RAG tool. Default = everything off.
+    model:
+      chat: none
+      embedding: ${SPRING_AI_MODEL_EMBEDDING:none}
+      image: none
+      moderation: none
+      audio:
+        speech: none
+        transcription: none
+    openai:
+      api-key: ${OPENAI_API_KEY:}
+      embedding:
+        options:
+          model: text-embedding-3-small
+
+mcp-server:
+  manuals:
+    classpath-pattern: classpath:/manuals/*.md
+    top-k-default: 4
+
+logging:
+  level:
+    io.pratico.springai.mcp: INFO
+    org.springframework.ai.mcp: INFO

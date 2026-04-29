@@ -1,0 +1,11 @@
+# HTTP/SSE transport profile (default).
+# Exposes MCP over Server-Sent Events on port 8080.
+server:
+  port: 8080
+
+spring:
+  ai:
+    mcp:
+      server:
+        stdio: false
+        protocol: SSE
